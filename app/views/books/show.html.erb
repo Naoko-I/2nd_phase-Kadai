@@ -29,8 +29,46 @@
 				</tr>
 			</table>
 
+		<h2>Comments index</h2>
+			<table class="border-none">
+				<% @book.book_comments.each do |comment| %>
+					<tr>
+						<td>
+							<%= attachment_image_tag current_user, :profile_image, size:"60x60", format: 'jpeg', fallback: "no_image.jpg" %>
+							<%= current_user.name %>
+						</td>
+						<% if book.favorited_by?(current_user) %>
+							<td>
+								<%= link_to book_favorite_path(book), method: :delete do %>
+			     				    <i class="glyphicon glyphicon-heart" aria-hidden="true" style="color: red;"></i>
+			      					<%= book.favorites.count %> いいね
+			      				<% end %>
+			      			</td>
+	      				<% else %>
+		      				<td>
+			      				<%= link_to book_favorite_path(book), method: :post do %>
+			      					<i class="glyphicon glyphicon-heart" aria-hidden="true"></i>
+			      					<%= book.favorites.count %> いいね
+								<% end %>
+							</td>
+						<% end %>
+						<td><%= comment.comment %></td>
+						<!-- ↑↑↑カッコ内書き方解説。。。変数.カラム名の順 %> -->
+						<% if @book.user == current_user %>
+						<td><%= link_to "Destroy", book_book_comments_path(book_id: @book, comment_id: comment.id), method: :delete, data: {confirm: "本当に削除してもよろしいですか？"}, class: "btn-sm btn-danger" %>
+						</td>
+						<% end %>
+					</tr>
+				<% end %>
+			</table>
+
+		<div class ="comment-form col-xs-9">
+			<%= form_for [@book, @book_comment] do |f| %>
+	        <%= f.text_area :comment, size: "80x5", class: "book_comment" %>
+	    	<%= f.submit "送信", class: "btn btn-sm btn-success" %>
+	    </div>
+			<% end %>
 	</div>
-</div>
 
 
 

@@ -18,25 +18,46 @@
 					<th></th>
 					<th>Title</th>
 					<th>Opinion</th>
-					<th colspan="3"></th>
+					<th colspan="1"></th>
+					<th colspan="2"></th>
 				</tr>
 			</thead>
 
 			<tbody>
 				<% @books.each do |book| %>
-				<tr>
-					<td>
-						<%= link_to (book.user) do %>
-						<%= attachment_image_tag current_user, :profile_image, size:"60x60", format: 'jpeg', fallback: "no_image.jpg" %>
+					<tr>
+						<td>
+							<%= link_to (book.user) do %>
+							<%= attachment_image_tag current_user, :profile_image, size:"60x60", format: 'jpeg', fallback: "no_image.jpg" %>
+							<% end %>
+						</td>
+						<td><%= link_to book.title,book, class: "book_#{book.id}" %></td>
+						<td><%= book.body %></td>
+						<% if book.favorited_by?(current_user) %>
+							<td>
+								<%= link_to book_favorite_path(book), method: :delete do %>
+			     				    <i class="glyphicon glyphicon-heart" aria-hidden="true" style="color: red;"></i>
+			      					<%= book.favorites.count %> いいね
+			      				<% end %>
+			      			</td>
+	      				<% else %>
+		      				<td>
+			      				<%= link_to book_favorite_path(book), method: :post do %>
+			      					<i class="glyphicon glyphicon-heart" aria-hidden="true"></i>
+			      					<%= book.favorites.count %> いいね
+								<% end %>
+							</td>
 						<% end %>
-					</td>
-					<td><%= link_to book.title,book, class: "book_#{book.id}" %></td>
-					<td><%= book.body %></td>
-				</tr>
+						<td>
+							<!-- <i class="fa fa-comment"></i>メシテロ引用→これ必要? -->
+	  						<!-- <a href="#comments"></a> メシテロ引用→これ必要?-->
+	  						コメント数：<%= book.book_comments.count %>件
+	  					</td>
+					</tr>
 				<% end %>
 			</tbody>
 		</table>
 	</div>
 </div>
-<!--books一覧 -->
+
 

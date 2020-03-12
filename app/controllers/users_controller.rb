@@ -27,11 +27,11 @@ class UsersController < ApplicationController
   end
 
   private
-  def user_params
-  	params.require(:user).permit(:name, :introduction, :profile_image)
-  end
+    def user_params
+    	params.require(:user).permit(:name, :introduction, :profile_image)
+    end
 
-  #url直接防止　メソッドを自己定義してbefore_actionで発動。
+    #url直接防止　メソッドを自己定義してbefore_actionで発動。
    def baria_user
   	unless params[:id].to_i == current_user.id
   		redirect_to user_path(current_user)
